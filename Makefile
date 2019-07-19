@@ -1,41 +1,57 @@
 CC=clang -O3
 AS=clang
 
-TARGETS=sbox_clang_512 sbox_jasmin_512 sbox_clang_2
+TARGETS=sbox_sse sbox_avx2 sbox_avx512 sbox_jasmin_avx512
 PERF=$(addsuffix .perf, $(TARGETS))
 ASM=$(addsuffix .s, $(TARGETS))
 OBJ=$(addsuffix .o, $(TARGETS))
 
-all: $(OBJ) bench
+SSEFLAGS=-msse -msse2 -msse3 -mssse3 -msse4 -msse4a -msse4.1 -msse4.2
+AVX512GLAGS=-mavx512f -mavx512pf -mavx512er -mavx512cd -mavx512vl -mavx512bw -mavx512dq -mavx512ifma -mavx512vbmi
+AVX2FLAGS=-mavx2
 
-build: $(TARGETS)
+all: bench
 
 bench: $(PERF)
+
+build: $(TARGETS)
 
 %.perf: %
 	perf stat -o $@ -d ./$<
 
-%_512.o: %_512.s
-	$(AS) -mavx512f -c $^
+%_avx512: %_avx512.o main.c
+	$(CC) -DNtest=64 $^ -o $@
 
-%_2.o: %_2.s
-	$(AS) -mavx2 -c $^
+%_avx2: %_avx2.o main.c
+	$(CC) -DNtest=128 $^ -o $@
 
-sbox_clang_512.s: sbox_clang_512.c
-	$(CC) -S -mavx512f $^
+%_sse: %_sse.o main.c
+	$(CC) -DNtest=256 $^ -o $@
 
-sbox_clang_2.s: sbox_clang_2.c
-	$(CC) -S -mavx2 $^
+%_avx512.o: %_avx512.s
+	$(AS) $(AVX512FLAGS) -c $^
 
-sbox_jasmin_512.s: sbox_jasmin_512.jazz
+%_avx2.o: %_avx2.s
+	$(AS) $(AVX2FLAGS) -c $^
+
+%_sse.o: %_sse.s
+	$(AS) $(SSEFLAGS) -c $^
+
+sbox_jasmin_avx512.s: sbox_jasmin_avx512.jazz
 	jasminc $^ -o $@.tmp
 	cat $@.tmp | sed 's/movdqu/movdqa64/g' > $@
 	$(RM) $@.tmp
 
-%:: main.c %.o
-	$(CC) $^ -o $@
+%_avx512.s: %_avx512.c
+	$(CC) -S $(AVX512FLAGS) $^
 
-.PHONY: clean mrproper
+%_avx2.s: %_avx2.c
+	$(CC) -S $(AVX2FLAGS) $^
+
+%_sse.s: %_sse.c
+	$(CC) -S $(SSEFLAGS) $^
+
+.PHONY: all build bench clean mrproper
 
 clean:
 	$(RM) $(OBJ) $(ASM)
