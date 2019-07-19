@@ -7,11 +7,11 @@ ASM=$(addsuffix .s, $(TARGETS))
 OBJ=$(addsuffix .o, $(TARGETS))
 
 SSEFLAGS=-msse -msse2 -msse3 -mssse3 -msse4 -msse4a -msse4.1 -msse4.2
-AVX512GLAGS=-mavx512f -mavx512pf -mavx512er -mavx512cd -mavx512vl -mavx512bw -mavx512dq -mavx512ifma -mavx512vbmi
+AVX512FLAGS=-mavx512f -mavx512pf -mavx512er -mavx512cd -mavx512vl -mavx512bw -mavx512dq -mavx512ifma -mavx512vbmi
 AVX2FLAGS=-mavx2
 
 all:
-	make -r bench
+	@make -r bench
 
 bench: $(PERF)
 
