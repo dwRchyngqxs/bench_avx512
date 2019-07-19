@@ -21,13 +21,13 @@ build: $(TARGETS)
 	perf stat -o $@ -d ./$<
 
 %_avx512: %_avx512.o main.c
-	$(CC) -DNtest=64 $^ -o $@
+	$(CC) -DNtest=268435456 $^ -o $@
 
 %_avx2: %_avx2.o main.c
-	$(CC) -DNtest=128 $^ -o $@
+	$(CC) -DNtest=536870912 $^ -o $@
 
 %_sse: %_sse.o main.c
-	$(CC) -DNtest=256 $^ -o $@
+	$(CC) -DNtest=1073741824 $^ -o $@
 
 %_avx512.o: %_avx512.s
 	$(AS) $(AVX512FLAGS) -c $^
@@ -55,7 +55,9 @@ sbox_jasmin_avx512.s: sbox_jasmin_avx512.jazz
 .PHONY: all build bench clean mrproper
 
 clean:
+	mv sbox_jasmin_avx512.s sbox_jasmin_avx512.ss
 	$(RM) $(OBJ) $(ASM)
+	mv sbox_jasmin_avx512.ss sbox_jasmin_avx512.s
 
 mrproper: clean
 	$(RM) $(PERF) $(TARGETS)

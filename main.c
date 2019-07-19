@@ -43,7 +43,7 @@ unsigned long long output[128] __attribute__((aligned(32)));
 
 int main()
 {
-	for (int x = 0; x < Ntest; ++x)
+	for (unsigned long long x = 0; x < Ntest; ++x)
 		SubBytes__(input, output);
 	return 0;
 }
