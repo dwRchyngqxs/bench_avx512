@@ -10,8 +10,7 @@ SSEFLAGS=-msse -msse2 -msse3 -mssse3 -msse4 -msse4a -msse4.1 -msse4.2
 AVX512FLAGS=-mavx512f -mavx512pf -mavx512er -mavx512cd -mavx512vl -mavx512bw -mavx512dq -mavx512ifma -mavx512vbmi
 AVX2FLAGS=-mavx2
 
-all:
-	@make -r bench
+all: bench
 
 bench: $(PERF)
 
@@ -53,6 +52,8 @@ sbox_jasmin_avx512.s: sbox_jasmin_avx512.jazz
 	$(CC) -S $(SSEFLAGS) $^
 
 .PHONY: all build bench clean mrproper
+
+.SUFFIXES:
 
 clean:
 	mv sbox_jasmin_avx512.s sbox_jasmin_avx512.ss
