@@ -13,7 +13,7 @@ build: $(TARGETS)
 bench: $(PERF)
 
 %.perf: %
-	perf stat -o $@ -d
+	perf stat -o $@ -d ./$<
 
 %_512.o: %_512.s
 	$(AS) -mavx512f -c $^

@@ -44,9 +44,10 @@ unsigned long long expected[128];/* = {
 
 int main()
 {
-	for (int x = 0; x < 20; ++x) {
-		SubBytes__(input, output);
-		// compare
+	for (int x = 0; x < 2; ++x) {
+		SubBytes__(input + ((x&1) << 5), output);
+		for (int y = 0; y < 64; ++y) printf("0x%.16X, ", output[y]);
+		puts("");
 	}
 	return 0;
 }
