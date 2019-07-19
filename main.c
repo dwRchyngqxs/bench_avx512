@@ -37,10 +37,10 @@ unsigned long long input[128] = {
 	0xf50931ffed3c2829, 0x88930e67cbca6c0d, 0x2eb2ea3092bce915, 0x153fd24a83c6d854
 };
 
-unsigned long long output[256];
-unsigned long long expected[256] = {
+unsigned long long output[128];
+unsigned long long expected[128];/* = {
 	
-};
+};*/
 
 int main()
 {
