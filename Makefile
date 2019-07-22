@@ -12,21 +12,22 @@ AVX2FLAGS=-mavx2
 
 all: bench
 
-bench: $(PERF)
+bench: build
+	./cmp.pl 50 $(TARGETS)
 
 build: $(TARGETS)
 
-%.perf: %
-	./$< > $@
+#%.perf: %
+#	./$< > $@
 
 %_avx512: %_avx512.o main.c
-	$(CC) -DNB_RUN=0x10000000 $^ -o $@
+	$(CC) -DVECTOR_ELEMENTS=32 $^ -o $@
 
 %_avx2: %_avx2.o main.c
-	$(CC) -DNB_RUN=0x20000000 $^ -o $@
+	$(CC) -DVECTOR_ELEMENTS=16 $^ -o $@
 
 %_sse: %_sse.o main.c
-	$(CC) -DNB_RUN=0x40000000 $^ -o $@
+	$(CC) -DVECTOR_ELEMENTS=8 $^ -o $@
 
 %_avx512.o: %_avx512.s
 	$(AS) $(AVX512FLAGS) -c $^

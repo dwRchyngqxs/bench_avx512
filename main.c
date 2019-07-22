@@ -6,8 +6,12 @@
 #define WARMUP 10000
 #endif
 
-#ifndef NB_RUN
-#define NB_RUN 0
+#ifndef VECTOR_ELEMENTS
+#define VECTOR_ELEMENTS 1
+#endif
+
+#ifndef DATA_AMOUNT
+#define DATA_AMOUNT 0x100000000LL
 #endif
 
 extern void SubBytes__(void* in, void* out);
@@ -58,10 +62,10 @@ int main()
 	// Timing the actual thing
 	unsigned int proc_id;
 	uint64_t timer = __rdtscp(&proc_id);
-	for (int i = 0; i < NB_RUN; ++i)
+	for (int64_t i = 0; i < DATA_AMOUNT/VECTOR_ELEMENTS; ++i)
 		SubBytes__(input, output);
 	timer = __rdtscp(&proc_id) - timer;
-	
+
 	// Outputing the result
 	printf("%lld cycles\n", timer);
 	return 0;
