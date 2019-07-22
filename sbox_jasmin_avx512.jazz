@@ -229,6 +229,6 @@ fn SubBytes_single(reg u512 in0 in1 in2 in3 in4 in5 in6 in7, reg u64 out)
 
 export fn SubBytes(reg u64 pin, reg u64 pout)
 {
-	SubBytes_single((u512)[pin + 0], (u512)[pin + 1], (u512)[pin + 2], (u512)[pin + 3],
-		(u512)[pin + 4], (u512)[pin + 5], (u512)[pin + 6], (u512)[pin + 7], pout);
+	SubBytes_single((u512)[pin + 0], (u512)[pin + 64], (u512)[pin + 128], (u512)[pin + 192],
+		(u512)[pin + 256], (u512)[pin + 320], (u512)[pin + 384], (u512)[pin + 448], pout);
 }

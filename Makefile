@@ -17,16 +17,16 @@ bench: $(PERF)
 build: $(TARGETS)
 
 %.perf: %
-	perf stat -o $@ -d ./$<
+	./$< > $@
 
 %_avx512: %_avx512.o main.c
-	$(CC) -DNtest=268435456 $^ -o $@
+	$(CC) -DNB_RUN=0x10000000 $^ -o $@
 
 %_avx2: %_avx2.o main.c
-	$(CC) -DNtest=536870912 $^ -o $@
+	$(CC) -DNB_RUN=0x20000000 $^ -o $@
 
 %_sse: %_sse.o main.c
-	$(CC) -DNtest=1073741824 $^ -o $@
+	$(CC) -DNB_RUN=0x40000000 $^ -o $@
 
 %_avx512.o: %_avx512.s
 	$(AS) $(AVX512FLAGS) -c $^

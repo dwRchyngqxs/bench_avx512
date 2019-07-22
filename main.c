@@ -1,5 +1,13 @@
-#ifndef Ntest
-#define Ntest 0
+#include <x86intrin.h>
+#include <stdio.h>
+#include <stdint.h>
+
+#ifndef WARMUP
+#define WARMUP 10000
+#endif
+
+#ifndef NB_RUN
+#define NB_RUN 0
 #endif
 
 extern void SubBytes__(void* in, void* out);
@@ -43,7 +51,18 @@ unsigned long long output[128] __attribute__((aligned(32)));
 
 int main()
 {
-	for (unsigned long long x = 0; x < Ntest; ++x)
+	// Warming up caches
+	for (int i = 0; i < WARMUP; ++i)
 		SubBytes__(input, output);
+
+	// Timing the actual thing
+	unsigned int proc_id;
+	uint64_t timer = __rdtscp(&proc_id);
+	for (int i = 0; i < NB_RUN; ++i)
+		SubBytes__(input, output);
+	timer = __rdtscp(&proc_id) - timer;
+	
+	// Outputing the result
+	printf("%lld cycles\n", timer);
 	return 0;
 }

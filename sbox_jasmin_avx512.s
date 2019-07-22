@@ -6,13 +6,13 @@ _SubBytes__:
 SubBytes__:
 	pushq	%rbp
 	vmovdqa64	(%rdi), %zmm0
-	vmovdqa64	1(%rdi), %zmm1
-	vmovdqa64	2(%rdi), %zmm2
-	vmovdqa64	3(%rdi), %zmm3
-	vmovdqa64	4(%rdi), %zmm4
-	vmovdqa64	5(%rdi), %zmm5
-	vmovdqa64	6(%rdi), %zmm6
-	vmovdqa64	7(%rdi), %zmm7
+	vmovdqa64	64(%rdi), %zmm1
+	vmovdqa64	128(%rdi), %zmm2
+	vmovdqa64	192(%rdi), %zmm3
+	vmovdqa64	256(%rdi), %zmm4
+	vmovdqa64	320(%rdi), %zmm5
+	vmovdqa64	384(%rdi), %zmm6
+	vmovdqa64	448(%rdi), %zmm7
 	vpxorq	%zmm5, %zmm3, %zmm8
 	vpxorq	%zmm6, %zmm0, %zmm9
 	vpxorq	%zmm3, %zmm0, %zmm10
