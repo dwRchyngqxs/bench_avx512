@@ -16,7 +16,7 @@
 
 extern void SubBytes__(void* in, void* out);
 
-unsigned long long input[128] __attribute__((aligned(32))) = {
+unsigned long long input[128] __attribute__((aligned(64))) = {
 	0x92d6b49da7ff0715, 0x9f19ba1cba5f854f, 0x4136bab29d1367d3, 0x98c0323d11967ef8,
 	0xe441cb4d670939bf, 0x2f32adbac5705a70, 0x2dc042a167892e3e, 0x77c4a69b7a3736c6,
 	0x640348dc756a3b1f, 0xfff51407fe1dbeae, 0xcd5a2934895ebbc4, 0xbdada52da08c6bee,
@@ -51,7 +51,7 @@ unsigned long long input[128] __attribute__((aligned(32))) = {
 	0xf50931ffed3c2829, 0x88930e67cbca6c0d, 0x2eb2ea3092bce915, 0x153fd24a83c6d854
 };
 
-unsigned long long output[128] __attribute__((aligned(32)));
+unsigned long long output[128] __attribute__((aligned(64)));
 
 int main()
 {
